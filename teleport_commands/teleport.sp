@@ -13,6 +13,7 @@ url = "",
 char arg1[MAX_NAME_LENGTH], arg2[MAX_NAME_LENGTH], clientName[MAX_NAME_LENGTH];
 int clientindex, target_player, NumPlayers;
 new Float:targetpos[3];
+char prefix[] = "[SM]";
 
 public OnPluginStart(){
   RegAdminCmd("sm_position", command_position, ADMFLAG_SLAY);
@@ -32,7 +33,7 @@ public Action command_position(int client,int args)
   if (args < 1)
   {
 
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_position/sm_pos <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_position/sm_pos <#userid|name>", prefix);
     return Plugin_Handled;
 
   }
@@ -42,7 +43,7 @@ public Action command_position(int client,int args)
 
   GetClientAbsOrigin(target_player, targetpos);
 
-  PrintToChat(client, " \x0b[\x01HN\x0b]\x01 \x0b%N \x01is at \x0b%0.0f\x01,\x0b%0.0f\x01,\x0b%0.0f",target_player, targetpos[0], targetpos[1], targetpos[2]);
+  PrintToChat(client, "%s \x0b%N \x01is at \x0b%0.0f\x01,\x0b%0.0f\x01,\x0b%0.0f",prefix,target_player, targetpos[0], targetpos[1], targetpos[2]);
 
   return Plugin_Handled;
 
@@ -54,7 +55,7 @@ public Action command_location(int client,int args)
   if (args < 1)
   {
 
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_location/sm_loc <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_location/sm_loc <#userid|name>",prefix);
     return Plugin_Handled;
 
   }
@@ -67,7 +68,7 @@ public Action command_location(int client,int args)
 
   GetEntPropString(target_player, Prop_Send, "m_szLastPlaceName", location, sizeof(location));
 
-  ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 \x0b%N \x01is in \x0b%s", target_player, location);
+  ReplyToCommand(client, "%s \x0b%N \x01is in \x0b%s", prefix,target_player, location);
 
   return Plugin_Handled;
 
@@ -78,7 +79,7 @@ public Action command_teleport(int client,int args)
 
   if (args < 2)
   {
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_teleport/sm_tp <#userid|name> <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_teleport/sm_tp <#userid|name> <#userid|name>",prefix);
     return Plugin_Handled;
   }
 
@@ -90,13 +91,13 @@ public Action command_teleport(int client,int args)
 
   if (target_player == clientindex)
   {
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 You cannot teleport to yourself because you are, you.");
+    ReplyToCommand(client, "%s You cannot teleport to yourself because you are, you.",prefix);
     return Plugin_Handled;
   }
 
   GetClientAbsOrigin(target_player, targetpos);
   TeleportEntity(clientindex, targetpos, NULL_VECTOR, NULL_VECTOR);
-  PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01teleported to \x0b%N",clientindex ,target_player);
+  PrintToChatAll("%s \x0b%N \x01teleported to \x0b%N",prefix,clientindex ,target_player);
 
   return Plugin_Handled;
 }
@@ -107,7 +108,7 @@ public Action command_goto(int client,int args)
   if (args < 1)
   {
 
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_goto <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_goto <#userid|name>",prefix);
     return Plugin_Handled;
   }
 
@@ -120,14 +121,14 @@ public Action command_goto(int client,int args)
   if (target_player == clientindex)
   {
 
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 You cannot goto to yourself because you are already here");
+    ReplyToCommand(client, "%s You cannot goto to yourself because you are already here",prefix);
     return Plugin_Handled;
 
   }
 
   GetClientAbsOrigin(target_player, targetpos);
   TeleportEntity(client, targetpos, NULL_VECTOR, NULL_VECTOR);
-  PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01went to \x0b%N",clientindex,target_player);
+  PrintToChatAll("%s \x0b%N \x01went to \x0b%N",prefix,clientindex,target_player);
 
   return Plugin_Handled;
 }
@@ -137,7 +138,7 @@ public Action command_bring(int client, int args)
   if (args < 1)
   {
 
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_goto <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_goto <#userid|name>",prefix);
     return Plugin_Handled;
 
   }
@@ -153,7 +154,7 @@ public Action command_bring(int client, int args)
 
   if ((target_count = ProcessTargetString(arg1,client,target_list,MAXPLAYERS,COMMAND_FILTER_ALIVE,target_name,sizeof(target_name),tn_is_ml)) <= 0)
 	{
-    PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01brought \x0b%s \x01to them",clientindex,arg1);
+    PrintToChatAll("%s \x0b%N \x01brought \x0b%s \x01to them",prefix,clientindex,arg1);
     return Plugin_Handled;
   }
   for (NumPlayers = 0; NumPlayers < target_count; NumPlayers++)
@@ -161,6 +162,6 @@ public Action command_bring(int client, int args)
   	TeleportEntity(target_list[NumPlayers], targetpos, NULL_VECTOR, NULL_VECTOR);
 	}
 
-  PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01brought \x0b%s \x01to them",clientindex,target_name);
+  PrintToChatAll("%s \x0b%N \x01brought \x0b%s \x01to them",prefix,clientindex,target_name);
   return Plugin_Handled;
 }
