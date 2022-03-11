@@ -13,7 +13,7 @@ url = "",
 char arg1[MAX_NAME_LENGTH],clientName[MAX_NAME_LENGTH];
 int NumPlayers, clientindex, target_player, userID;
 new Float:targetpos[3],Float:Xdeathpos[MAXPLAYERS],Float:Ydeathpos[MAXPLAYERS],Float:Zdeathpos[MAXPLAYERS];
-
+char prefix[] = "[SM]";
 public OnPluginStart(){
   HookEvent("player_death", Event_PlayerDeath);
   RegAdminCmd("sm_respawn", command_respawn, ADMFLAG_SLAY);
@@ -43,7 +43,7 @@ public Action command_respawndeath(int client, int args)
   if (args < 1)
   {
 
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_respawndeath/sm_rd <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_respawndeath/sm_rd <#userid|name>",prefix);
     return Plugin_Handled;
 
   }
@@ -59,9 +59,9 @@ public Action command_respawndeath(int client, int args)
   if ((target_count = ProcessTargetString(arg1,client,target_list,MAXPLAYERS,COMMAND_FILTER_DEAD,target_name,sizeof(target_name),tn_is_ml)) <= 0)
 	{
   PrintToChat(client, " \x0b[\x01HN\x0b]\x01 No Players Found!");
-  if (StrEqual(arg1,"@t",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bTerrorists \x01where they died",clientindex);}
-  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bCounter-Terrorists \x01where they died",clientindex);}
-  if (StrEqual(arg1,"@all",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bAll Players \x01where they died",clientindex);}
+  if (StrEqual(arg1,"@t",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bTerrorists \x01where they died",prefix,clientindex);}
+  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bCounter-Terrorists \x01where they died",prefix,clientindex);}
+  if (StrEqual(arg1,"@all",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bAll Players \x01where they died",prefix,clientindex);}
   return Plugin_Handled;
   }
   for (NumPlayers = 0; NumPlayers < target_count; NumPlayers++)
@@ -73,8 +73,8 @@ public Action command_respawndeath(int client, int args)
     CS_RespawnPlayer(target_list[NumPlayers]);
     TeleportEntity(target_list[NumPlayers], targetpos, NULL_VECTOR, NULL_VECTOR);
 	}
-  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bCounter-Terrorists \x01where they died",clientindex);return Plugin_Handled;}
-  PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0b%s \x01where they died",clientindex,target_name);
+  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bCounter-Terrorists \x01where they died",prefix,clientindex);return Plugin_Handled;}
+  PrintToChatAll("%s \x0b%N \x01respawned \x0b%s \x01where they died",prefix,clientindex,target_name);
   return Plugin_Handled;
 }
 
@@ -83,7 +83,7 @@ public Action command_respawn(int client, int args)
   if (args < 1)
   {
 
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_respawn/sm_r <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_respawn/sm_r <#userid|name>",prefix);
     return Plugin_Handled;
 
   }
@@ -98,18 +98,18 @@ public Action command_respawn(int client, int args)
 
   if ((target_count = ProcessTargetString(arg1,client,target_list,MAXPLAYERS,COMMAND_FILTER_DEAD,target_name,sizeof(target_name),tn_is_ml)) <= 0)
 	{
-   PrintToChat(client, " \x0b[\x01HN\x0b]\x01 No Players Found!");
-   if (StrEqual(arg1,"@t",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bTerrorists",clientindex);}
-   if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bCounter-Terrorists",clientindex);}
-   if (StrEqual(arg1,"@all",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bAll Players",clientindex);}
+   PrintToChat(client, "%s No Players Found!",prefix);
+   if (StrEqual(arg1,"@t",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bTerrorists",prefix,clientindex);}
+   if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bCounter-Terrorists",prefix,clientindex);}
+   if (StrEqual(arg1,"@all",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bAll Players",prefix,clientindex);}
    return Plugin_Handled;
   }
   for (NumPlayers = 0; NumPlayers < target_count; NumPlayers++)
 	{
   	  CS_RespawnPlayer(target_list[NumPlayers]);
 	}
-  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bCounter-Terrorists",clientindex); return Plugin_Handled;}
-  PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0b%s \x01",clientindex,target_name);
+  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bCounter-Terrorists",prefix,clientindex); return Plugin_Handled;}
+  PrintToChatAll("%s \x0b%N \x01respawned \x0b%s \x01",prefix,clientindex,target_name);
   return Plugin_Handled;
 }
 
@@ -117,7 +117,7 @@ public Action command_respawnteleport(int client, int args)
 {
   if (args < 1)
   {
-    ReplyToCommand(client, " \x0b[\x01HN\x0b]\x01 Usage: sm_respawnteleport/sm_rt <#userid|name>");
+    ReplyToCommand(client, "%s Usage: sm_respawnteleport/sm_rt <#userid|name>",prefix);
     return Plugin_Handled;
   }
 
@@ -132,10 +132,10 @@ public Action command_respawnteleport(int client, int args)
 
   if ((target_count = ProcessTargetString(arg1,client,target_list,MAXPLAYERS,COMMAND_FILTER_DEAD,target_name,sizeof(target_name),tn_is_ml)) <= 0)
 	{
-    PrintToChat(client, " \x0b[\x01HN\x0b]\x01 No Players Found!");
-    if (StrEqual(arg1,"@t",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned and brought \x0bTerrorists \x01to them",clientindex);}
-    if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned and brought \x0bCounter-Terrorists \x01to them",clientindex);}
-    if (StrEqual(arg1,"@all",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned and brought \x0bAll Players \x01to them",clientindex);}
+    PrintToChat(client, "%s No Players Found!",prefix);
+    if (StrEqual(arg1,"@t",false)==true){PrintToChatAll("%s \x0b%N \x01respawned and brought \x0bTerrorists \x01to them",prefix,clientindex);}
+    if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll("%s \x0b%N \x01respawned and brought \x0bCounter-Terrorists \x01to them",prefix,clientindex);}
+    if (StrEqual(arg1,"@all",false)==true){PrintToChatAll("%s \x0b%N \x01respawned and brought \x0bAll Players \x01to them",prefix,clientindex);}
     return Plugin_Handled;
   }
   for (NumPlayers = 0; NumPlayers < target_count; NumPlayers++)
@@ -143,7 +143,7 @@ public Action command_respawnteleport(int client, int args)
     CS_RespawnPlayer(target_list[NumPlayers]);
     TeleportEntity(target_list[NumPlayers], targetpos, NULL_VECTOR, NULL_VECTOR);
 	}
-  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned \x0bCounter-Terrorists",clientindex); return Plugin_Handled;}
-  PrintToChatAll(" \x0b[\x01HN\x0b]\x01 \x0b%N \x01respawned and brought \x0b%s \x01to them",clientindex,target_name);
+  if (StrEqual(arg1,"@ct",false)==true){PrintToChatAll("%s \x0b%N \x01respawned \x0bCounter-Terrorists",prefix,clientindex); return Plugin_Handled;}
+  PrintToChatAll("%s \x0b%N \x01respawned and brought \x0b%s \x01to them",prefix,clientindex,target_name);
   return Plugin_Handled;
 }
