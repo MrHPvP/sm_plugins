@@ -9,14 +9,14 @@ public Plugin:myinfo = {
 
 // Initialize
 char arg1[MAX_NAME_LENGTH],arg2[MAX_NAME_LENGTH],arg3[MAX_NAME_LENGTH],clientName[MAX_NAME_LENGTH];
-char prefix[] = " \x0b[\x01HN\x0b]\x01";
+char prefix[] = "[SM]";
 int NumPlayers, clientindex,healthamount,healthmin,healthmax;
 
 public OnPluginStart(){
   RegAdminCmd("sm_sethealth",command_sethealth, ADMFLAG_SLAY);
   RegAdminCmd("sm_hp",command_sethealth, ADMFLAG_SLAY);
   RegAdminCmd("sm_setrandomhealth",command_setrandomhealth, ADMFLAG_SLAY);
-  RegAdminCmd("sm_randhp",command_setrandomhealth, ADMFLAG_SLAY);
+  RegAdminCmd("sm_rhp",command_setrandomhealth, ADMFLAG_SLAY);
 }
 public Action command_sethealth(int client, int args)
 {
